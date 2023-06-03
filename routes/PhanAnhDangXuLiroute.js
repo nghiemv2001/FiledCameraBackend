@@ -16,7 +16,7 @@ router.post('/PhanAnhDangXuLi/create', async (req, res) => {
     gio,
     ngay,
     thang,
-    nam} = req.body;
+    nam } = req.body;
     const phanAnhDangXuLi = new PhanAnhDangXuLi({
         noidung,
         trangthai,
@@ -47,5 +47,11 @@ router.get('/PhanAnhDangXuLi/', async(req, res)=>{
     }
     res.send(DanhSachPhanAnhDangXuLi);
 })
+
+router.delete('/PhanAnhDangXuLi/delete/:id', async (req, res) => {
+    const id = req.params.id;
+    const XoaPhanAnh = await PhanAnhDangXuLi.findByIdAndDelete(id);
+    res.json(XoaPhanAnh);
+  });
 
 module.exports = router;
