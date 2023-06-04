@@ -40,4 +40,10 @@ router.get('/PhanAnhHoanThanh/', async(req, res)=>{
     res.send(DanhSachPhanAnhHoanThanh);
 })
 
+router.delete('/PhanAnhHoanThanh/delete/:id', async (req, res) => {
+    const id = req.params.id;
+    const XoaPhanAnh = await PhanAnhHoanThanh.findByIdAndDelete(id);
+    res.json(XoaPhanAnh);
+  });
+
 module.exports = router;
