@@ -68,14 +68,14 @@ router.post('/signin', async (req, res) => {
     }
 })
 
-// //edit user 
-// router.put('/user/update/:id', async (req, res) => {
-//     const id = req.params.id;
-//     const updates = req.body;
-//     const options = { new: true };
-//     const user = await User.findByIdAndUpdate(id, updates, options);
-//     res.json(user);
-// })
+//edit user 
+router.put('/user/update/:id', async (req, res) => {
+    const id = req.params.id;
+    const fdata= req.body;
+    const options = { new: true };
+    const user = await User.findByIdAndUpdate(id, fdata, options);
+    res.json(user);
+})
 
 // async function mailer(receiveemal) {
 //     let transporter = nodemailer.createTransport({
@@ -137,20 +137,18 @@ router.get('/user/:email', async (req, res, next) => {
         });
 });
 
-// //delete category 
-// router.delete('/user/delete/:id', async (req, res) => {
-//     const id = req.params.id;
-//     const user = await User.findByIdAndDelete(id);
-//     res.json(user);
-//   });
+router.delete('/user/delete/:id', async (req, res) => {
+    const id = req.params.id;
+    const user = await User.findByIdAndDelete(id);
+    res.json(user);
+  });
 
 
-//   // get list product
-// router.get('/users/', async(req, res)=>{
-//     const user = await User.find().select();
-//     if(!user){
-//         res.status(500).json({success:false});
-//     }
-//     res.send(user);
-// })
+router.get('/users/', async(req, res)=>{
+    const user = await User.find().select();
+    if(!user){
+        res.status(500).json({success:false});
+    }
+    res.send(user);
+})
 module.exports = router;

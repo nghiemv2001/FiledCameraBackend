@@ -12,6 +12,7 @@ router.post('/PhanAnhHoanThanh/create', async (req, res) => {
     longitudeDelta,
     vitri,
     hinhanh,
+    userID,
     thoigianxuli} = req.body;
     const phanAnhHoanThanh = new PhanAnhHoanThanh({
         noidung,
@@ -20,6 +21,7 @@ router.post('/PhanAnhHoanThanh/create', async (req, res) => {
         longitudeDelta,
         vitri,
         hinhanh,
+        userID,
         thoigianxuli
     })
     phanAnhHoanThanh.save().then((createPhanAnh => {

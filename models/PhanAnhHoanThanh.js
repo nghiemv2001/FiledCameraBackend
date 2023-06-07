@@ -24,6 +24,10 @@ const PhanAnhHoanThanhSchema = new mongoose.Schema({
         type : String,
         require: true
     },
+    userID : {
+        type : String , 
+        require : true
+    },
     thoigianxuli:{
         type : String,
         require : true

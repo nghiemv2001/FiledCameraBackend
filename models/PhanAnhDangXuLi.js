@@ -28,6 +28,10 @@ const PhanAnhDangXuLiSchema = new mongoose.Schema({
         type : Number,
         require: true
     },
+    userID : {
+        type : String , 
+        require : true
+    },
     gio:{
         type : Number,
         require: true

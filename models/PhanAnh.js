@@ -24,6 +24,10 @@ const PhanAnhSchema = new mongoose.Schema({
         type : String,
         require: true
     },
+    userID : {
+        type : String , 
+        require : true
+    },
     phut:{
         type : Number,
         require: true
