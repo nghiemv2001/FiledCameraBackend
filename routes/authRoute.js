@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const User = mongoose.model("User");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-// const nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer");
 
 
 require('dotenv').config();
@@ -77,31 +77,31 @@ router.put('/user/update/:id', async (req, res) => {
     res.json(user);
 })
 
-// async function mailer(receiveemal) {
-//     let transporter = nodemailer.createTransport({
-//         host: "smtp.gmail.com",
-//         port: 587,
-//         secure: false,
-//         auth: {
-//             user: "nghiemV2001@gmail.com",
-//             pass: "xddzhwnsqbmwvewk",
-//         },
-//     });
-//     let info = await transporter.sendMail({
-//         from: 'nghiem2001@gmail.com',
-//         to: `${receiveemal}`,
-//         subject: "Restaurant App✔",
-//         text: `Hello`,
-//         html: `https://www.google.com/</b>`,
-//     });
-//     console.log("Message sent: %s", info.messageId);
-//     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-// }
+async function mailer(receiveemal, code) {
+    let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+            user: "nghiemV2001@gmail.com",
+            pass: "xddzhwnsqbmwvewk",
+        },
+    });
+    let info = await transporter.sendMail({
+        from: 'nghiem2001@gmail.com',
+        to: `${receiveemal}`,
+        subject: "Phản Ảnh Hiện Trường",
+        text: `Mã OPT`,
+        html: `Mã OTP của bạn là ${code}</b>`,
+    });
+}
 
-// router.post('/fogot', async (req, res) => {
-//     const { email } = req.body;
-//     mailer(email);
-// })
+router.post('/fogot', async (req, res) => {
+    const { email } = req.body;
+    let OPTcode = Math.floor(1000 + Math.random()* 9000)
+    mailer(email, OPTcode);
+    res.json({ otpCode: OPTcode });
+})
 
 // // //Find one user 
 // // router.get('/user/:email', async (req, res) => {
