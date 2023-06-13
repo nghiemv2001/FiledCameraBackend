@@ -151,4 +151,35 @@ router.get('/users/', async(req, res)=>{
     }
     res.send(user);
 })
+
+router.put('/user/updatePassword', async (req, res) => {
+  const { email, newPassword } = req.body;
+  try {
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    user.password = newPassword;
+    await user.save();
+    res.json({ message: "Password updated successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post('/user/checkEmail', async (req, res) => {
+    const { email } = req.body;
+    try {
+      const user = await User.findOne({ email: email });
+      if (user) {
+        return res.json("true");
+      } else {
+        return res.json("false");
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
 module.exports = router;

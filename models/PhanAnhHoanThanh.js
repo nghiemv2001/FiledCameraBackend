@@ -31,6 +31,18 @@ const PhanAnhHoanThanhSchema = new mongoose.Schema({
     thoigianxuli:{
         type : String,
         require : true
+    },
+    ngay:{
+        type : Number,
+        require: true
+    },
+    thang:{
+        type : Number,
+        require: true
+    },
+    nam:{
+        type : Number,
+        require: true
     }
 })
 mongoose.model("PhanAnhHoanThanh", PhanAnhHoanThanhSchema)
