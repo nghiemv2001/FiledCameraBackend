@@ -48,9 +48,5 @@ const PhanAnhDangXuLiSchema = new mongoose.Schema({
         type : Number,
         require: true
     },
-    
-    
-
-
 })
 mongoose.model("PhanAnhDangXuLi", PhanAnhDangXuLiSchema)

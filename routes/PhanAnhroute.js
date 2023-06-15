@@ -50,7 +50,6 @@ router.get('/PhanAnh/', async (req, res) => {
     res.send(DanhSachPhanAnh);
 })
 //Xóa danh sách phản ánh
-
 router.delete('/PhanAnh/delete/:id', async (req, res) => {
     const id = req.params.id;
     const XoaPhanAnh = await PhanAnh.findByIdAndDelete(id);
@@ -85,14 +84,12 @@ router.get('/PhanAnhChuaXuLi/count', async (req, res) => {
 //dem phan anh chua xu li  theo thang nam 
 router.get('/PhanAnhChuaXuLi/count/:month/:year', async (req, res) => {
     const { year, month } = req.params;
-
     try {
         const count = await PhanAnh.countDocuments({
             thang: parseInt(month),
             nam: parseInt(year),
              trangthai: 1 
         });
-
         res.json(count);
     } catch (err) {
         res.status(500).json({
@@ -105,14 +102,12 @@ router.get('/PhanAnhChuaXuLi/count/:month/:year', async (req, res) => {
 //dem phan anh khan  theo thang nam 
 router.get('/PhanAnhKhan/count/:month/:year', async (req, res) => {
     const { year, month } = req.params;
-
     try {
         const count = await PhanAnh.countDocuments({
             thang: parseInt(month),
             nam: parseInt(year),
              trangthai: 0 
         });
-
         res.json(count);
     } catch (err) {
         res.status(500).json({

@@ -5,20 +5,18 @@ const User = mongoose.model("User");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const nodemailer = require("nodemailer");
-
-
 require('dotenv').config();
+// dang ky
 router.post('/signup', (req, res) => {
-    console.log('sent by client - ', req.body);
-    const { name, email, phone, password, keycode, role, image, birthday } = req.body;
+    console.log(req.body)
+    const { name, email, phone, password, keycode, role, image} = req.body;
     if (!email || !password || !name || !phone || !keycode || !role) {
-        return res.status(422).send({ error: "please add all the dields1" });
+        return res.status(422).send({ error: "Cung cấp đầy đủ thông tin!" });
     }
-    // check email equire
     User.findOne({ email: email })
         .then(async (savedUser) => {
             if (savedUser) {
-                return res.status(422).send({ error: "Invalid Credential" });
+                return res.status(422).send({error : "Tài khoản đã tồn tại"});
             }
             const user = new User({
                 name,
@@ -40,7 +38,7 @@ router.post('/signup', (req, res) => {
             }
         })
 })
-
+//dang nhap
 router.post('/signin', async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -53,13 +51,11 @@ router.post('/signin', async (req, res) => {
     try {
         bcrypt.compare(password, savedUser.password, (err, result) => {
             if (result) {
-                console.log("Password matched");
                 const token = jwt.sign({ _id: savedUser._id }, process.env.JWT_SECRET);
                 res.send({ token });
             }
             else {
-                console.log('Password does not match');
-                return res.status(422).json({ error: "Invalid Credentials" });
+                return res.status(422).json({ error: "Thông tin không hợp lệ" });
             }
         })
     }
@@ -68,7 +64,7 @@ router.post('/signin', async (req, res) => {
     }
 })
 
-//edit user 
+//chinh sua quyen 
 router.put('/user/update/:id', async (req, res) => {
     const id = req.params.id;
     const fdata= req.body;
@@ -76,7 +72,7 @@ router.put('/user/update/:id', async (req, res) => {
     const user = await User.findByIdAndUpdate(id, fdata, options);
     res.json(user);
 })
-
+// node mail
 async function mailer(receiveemal, code) {
     let transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -95,55 +91,40 @@ async function mailer(receiveemal, code) {
         html: `Mã OTP của bạn là ${code}</b>`,
     });
 }
-
+// quen mat khau
 router.post('/fogot', async (req, res) => {
     const { email } = req.body;
     let OPTcode = Math.floor(1000 + Math.random()* 9000)
     mailer(email, OPTcode);
     res.json({ otpCode: OPTcode });
 })
-
-// // //Find one user 
-// // router.get('/user/:email', async (req, res) => {
-// //     const email = req.params.email;
-// //     User.findOne({ email: email }, function(err, user) {
-// //         if (err) return res.status(500).send(err);
-// //         if (!user) return res.status(404).send("User not found.");
-// //         res.send(user);
-// //     });
-// // })
-
-
+// tim mot tai khoan
 router.get('/user/:email', async (req, res, next) => {
     const email = req.params.email
     User.findOne({ email: email })
         .exec()
         .then((user) => {
             if (!user) {
-                // Nếu không tìm thấy user với email đã cho
                 return res.status(404).json({
                     message: 'User not found',
                 });
             }
-            // Trả về user tìm thấy
             res.status(200).json(user);
         })
         .catch((err) => {
-            // Xử lý lỗi nếu có
             console.error(err);
             res.status(500).json({
                 error: err,
             });
         });
 });
-
+//xoa tai khoan
 router.delete('/user/delete/:id', async (req, res) => {
     const id = req.params.id;
     const user = await User.findByIdAndDelete(id);
     res.json(user);
   });
-
-
+//lay toan bo danh sach tai khoan tren he thong
 router.get('/users/', async(req, res)=>{
     const user = await User.find().select();
     if(!user){
@@ -151,7 +132,7 @@ router.get('/users/', async(req, res)=>{
     }
     res.send(user);
 })
-
+// dat lai mat khau
 router.put('/user/updatePassword', async (req, res) => {
   const { email, newPassword } = req.body;
   try {
@@ -167,7 +148,7 @@ router.put('/user/updatePassword', async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
+//kiem tra 1 tai khoan co tren he thong
 router.post('/user/checkEmail', async (req, res) => {
     const { email } = req.body;
     try {
@@ -179,7 +160,7 @@ router.post('/user/checkEmail', async (req, res) => {
       }
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: "Error" });
     }
   });
 module.exports = router;

@@ -3,8 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const PhanAnhHoanThanh = mongoose.model('PhanAnhHoanThanh');
 require('dotenv').config();
-
-
+// tao mot phan anh da hoan thanh
 router.post('/PhanAnhHoanThanh/create', async (req, res) => {
     const { noidung,
         trangthai,
@@ -39,7 +38,7 @@ router.post('/PhanAnhHoanThanh/create', async (req, res) => {
         })
     })
 })
-
+// lay tat ca phan anh
 router.get('/PhanAnhHoanThanh/', async (req, res) => {
     const DanhSachPhanAnhHoanThanh = await PhanAnhHoanThanh.find().select();
     if (!DanhSachPhanAnhHoanThanh) {
@@ -47,7 +46,7 @@ router.get('/PhanAnhHoanThanh/', async (req, res) => {
     }
     res.send(DanhSachPhanAnhHoanThanh);
 })
-
+// xoa mot phan anh
 router.delete('/PhanAnhHoanThanh/delete/:id', async (req, res) => {
     const id = req.params.id;
     const XoaPhanAnh = await PhanAnhHoanThanh.findByIdAndDelete(id);
@@ -69,13 +68,11 @@ router.get('/PhanAnhHoanThanh/count', async (req, res) => {
 // Dem so luong phan anh hoan thanh theo thang nam
 router.get('/PhanAnhHoanThanh/count/:month/:year', async (req, res) => {
     const { year, month } = req.params;
-
     try {
         const count = await PhanAnhHoanThanh.countDocuments({
             thang: parseInt(month),
             nam: parseInt(year)
         });
-
         res.json(count);
     } catch (err) {
         res.status(500).json({
